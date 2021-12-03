@@ -26,4 +26,7 @@ export class ToDoDetailComponent {
   @Output() public save: EventEmitter<ToDo> = new EventEmitter();
 
   @Output() public cancel: EventEmitter<void> = new EventEmitter();
+
+  @Output() public complete: EventEmitter<void> = new EventEmitter();
+
 }
