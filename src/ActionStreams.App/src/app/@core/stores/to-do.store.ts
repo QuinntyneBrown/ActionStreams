@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { ToDo, ToDoService } from "@api";
+import { isNonNull } from "@core/abstractions/is-non-null";
 import { switchMapByKey } from "@core/abstractions/switch-map-by-key";
 import { ComponentStore } from "@ngrx/component-store";
 import { EMPTY, of } from "rxjs";
 import { catchError, filter, first, mergeMap, shareReplay, switchMap, tap } from "rxjs/operators";
-import { isNonNull } from "./abstractions/is-non-null";
 
 
 export interface ToDoStoreState {
@@ -49,7 +49,13 @@ export class ToDoStore extends ComponentStore<ToDoStoreState> {
           if(toDos === undefined) {
             return this._toDoService.get()
             .pipe(
-              tap(toDos => this.setState((state) => ({...state, toDos }))),
+              tap({
+                next:(toDos) => this.setState((state) => ({...state, toDos })),
+                error: () => {
+
+                }
+              }),
+              catchError(() => EMPTY)
             );
           }
           return of(toDos);

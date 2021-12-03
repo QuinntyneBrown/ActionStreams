@@ -1,0 +1,17 @@
+<ng-container *ngIf="vm$ | async as vm">
+
+  <h1>To Dos</h1>
+
+  <div class="to-dos__container">
+
+    <app-to-do-list [toDos]="vm.toDos">
+
+    </app-to-do-list>
+
+    <app-to-do-detail (save)="handleSave($event)" (cancel)="handleCancel()">
+
+    </app-to-do-detail>
+
+  </div>
+
+</ng-container>

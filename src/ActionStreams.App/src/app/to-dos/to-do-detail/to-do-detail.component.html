@@ -1,0 +1,17 @@
+<h1 *ngIf="!form.value.toDoId">Create To Do</h1>
+
+<h1 *ngIf="form.value.toDoId">Edit To Do</h1>
+
+<form [formGroup]="form">
+  <div>
+    <label>
+      Description
+    </label>
+
+    <input type="text" formControlName="description">
+  </div>
+</form>
+
+<button (click)="cancel.emit()">Cancel</button>
+
+<button (click)="save.emit(form.value)">Save</button>
