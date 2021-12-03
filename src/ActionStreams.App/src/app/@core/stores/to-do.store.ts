@@ -133,4 +133,8 @@ export class ToDoStore extends ComponentStore<ToDoStoreState> {
       )
     })
   ));
+
+  readonly unsetToDo = this.effect<void>(trigger$ => trigger$.pipe(
+    tap(_ => this.setState((state) => ({...state, toDo: null })))
+  ));
 }

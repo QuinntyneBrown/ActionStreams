@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ToDo } from '@api';
 import { ToDoStore } from '@core';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -19,9 +19,15 @@ export class ToDosComponent {
 
   selectToDo$ = this._selectToDoActionStream.asObservable();
 
-  public vm$ = this._toDoStore.getToDos()
+  public vm$ = combineLatest([
+    this._toDoStore.getToDos(),
+    this._toDoStore.select(x => x.toDo)
+  ])
   .pipe(
-    map(toDos => ({ toDos }))
+    map(([toDos,toDo]) => ({
+      toDos,
+      toDo
+    }))
   );
 
   constructor(
