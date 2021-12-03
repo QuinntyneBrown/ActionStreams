@@ -1,0 +1,32 @@
+{
+  "projects": null,
+  "path": "C:\\Projects\\ActionStreams",
+  "solutionName": null,
+  "rootNamespace": null,
+  "domainNamespace": "ActionStreams.Api",
+  "applicationNamespace": "ActionStreams.Api",
+  "infrastructureNamespace": "ActionStreams.Api",
+  "apiNamespace": "ActionStreams.Api",
+  "domainDirectory": "C:\\Projects\\ActionStreams\\src\\ActionStreams.Api",
+  "applicationDirectory": "C:\\Projects\\ActionStreams\\src\\ActionStreams.Api",
+  "infrastructureDirectory": "C:\\Projects\\ActionStreams\\src\\ActionStreams.Api",
+  "apiDirectory": "C:\\Projects\\ActionStreams\\src\\ActionStreams.Api",
+  "appDirectories": [
+    "C:\\Projects\\ActionStreams\\src\\ActionStreams.App"
+  ],
+  "buildingBlocksCoreNamespace": "BuildingBlocks.Core",
+  "buildingBlocksEventStoreNamespace": "BuildingBlocks.EventStore",
+  "store": null,
+  "namespace": null,
+  "domain": null,
+  "core": null,
+  "api": null,
+  "entityIdDataType": null,
+  "sourceFolder": "src",
+  "testFolder": null,
+  "dbContext": "ActionStreamsDbContext",
+  "eventSourcing": false,
+  "resources": [
+    "ToDo"
+  ]
+}
