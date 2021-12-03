@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToDo } from '@api';
 
 @Component({
   selector: 'app-to-do-detail',
   templateUrl: './to-do-detail.component.html',
-  styleUrls: ['./to-do-detail.component.scss']
+  styleUrls: ['./to-do-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToDoDetailComponent {
 
@@ -17,7 +18,7 @@ export class ToDoDetailComponent {
 
   @Input("toDo") set toDo(toDo: ToDo) {
     if(toDo) {
-      this.form.setValue(toDo);
+      this.form.setValue(toDo || {});
     } else {
       this.form.reset();
     }

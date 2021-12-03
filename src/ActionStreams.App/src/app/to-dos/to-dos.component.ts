@@ -1,34 +1,57 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ToDo } from '@api';
 import { ToDoStore } from '@core';
-import { combineLatest, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Action } from '@core/abstractions/action';
+import { BehaviorSubject, combineLatest, of } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-to-dos',
   templateUrl: './to-dos.component.html',
-  styleUrls: ['./to-dos.component.scss']
+  styleUrls: ['./to-dos.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToDosComponent {
 
-  private _createToDoActionStream: Subject<void> = new Subject();
+  private readonly _actionStream: BehaviorSubject<Action<ToDo>> = new BehaviorSubject({
+    type: 'default',
+    payload: null
+  });
 
-  createToDo$ = this._createToDoActionStream.asObservable();
+  private readonly _action$ = this._actionStream.asObservable();
 
-  private _selectToDoActionStream: Subject<string> = new Subject();
-
-  selectToDo$ = this._selectToDoActionStream.asObservable();
-
-  public vm$ = combineLatest([
-    this._toDoStore.getToDos(),
-    this._toDoStore.select(x => x.toDo)
-  ])
+  public vm$ = of(undefined)
   .pipe(
-    map(([toDos,toDo]) => ({
-      toDos,
-      toDo
-    }))
-  );
+    switchMap(_ => combineLatest([
+      this._toDoStore.getToDos(),
+      this._toDoStore.select(x => x.toDo),
+      this._action$.pipe(
+        tap(action => {
+          switch(action.type) {
+            case 'cancel':
+            case 'create':
+              this._toDoStore.setState((state) => ({...state, toDo: null }));
+              break;
+
+            case 'select':
+              this._toDoStore.setState((state) => ({...state, toDo: action.payload }));
+              break;
+
+            case 'default':
+              break;
+          }
+        })
+      )
+    ])
+    .pipe(
+      map(([toDos,toDo]) => {
+        return {
+          toDos,
+          toDo
+        };
+      })
+    ))
+  )
 
   constructor(
     private readonly _toDoStore: ToDoStore
@@ -43,15 +66,15 @@ export class ToDosComponent {
   }
 
   public handleCancel() {
-    this._createToDoActionStream.next();
+    this._actionStream.next({ payload: null, type: 'cancel' });
   }
 
-  public selectToDo(toDoId: string) {
-    this._selectToDoActionStream.next(toDoId);
+  public handleSelect(toDo: ToDo) {
+    this._actionStream.next({ payload: toDo, type: 'select' });
   }
 
   createToDo() {
-    this._createToDoActionStream.next();
+    this._actionStream.next({ payload: null, type: 'create' });
   }
 
 }

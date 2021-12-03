@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { ToDo, ToDoService } from "@api";
 import { isNonNull } from "@core/abstractions/is-non-null";
+import { pluckOut } from "@core/abstractions/pluck-out";
+import { replace } from "@core/abstractions/replace";
 import { switchMapByKey } from "@core/abstractions/switch-map-by-key";
 import { ComponentStore } from "@ngrx/component-store";
 import { EMPTY, of } from "rxjs";
@@ -88,9 +90,7 @@ export class ToDoStore extends ComponentStore<ToDoStoreState> {
       return this._toDoService.create({ toDo })
       .pipe(
         tap({
-          next:({ toDo }) => {
-            this.setState((state) => ({...state, toDo }))
-          },
+          next:({ toDo }) => this.setState((state) => ({...state, toDos: state.toDos.concat([toDo]) })),
           error: () => {
 
           }
@@ -105,9 +105,7 @@ export class ToDoStore extends ComponentStore<ToDoStoreState> {
       return this._toDoService.update({ toDo })
       .pipe(
         tap({
-          next: ({ toDo }) => {
-            this.setState((state) => ({...state, toDo }))
-          },
+          next: ({ toDo }) => this.setState((state) => ({...state, toDos: replace({ items: state.toDos, value: toDo, key: "toDoId" }) })),
           error: () => {
 
           }
@@ -122,9 +120,7 @@ export class ToDoStore extends ComponentStore<ToDoStoreState> {
       return this._toDoService.remove({ toDo })
       .pipe(
         tap({
-          next: _ => {
-            this.setState((state) => ({...state, toDo: null }));
-          },
+          next: _ => this.setState((state) => ({...state, toDos: pluckOut({ items: state.toDos, value: toDo, key: "toDoId" }) })),
           error: () => {
 
           }
@@ -132,9 +128,5 @@ export class ToDoStore extends ComponentStore<ToDoStoreState> {
         catchError(() => EMPTY)
       )
     })
-  ));
-
-  readonly unsetToDo = this.effect<void>(trigger$ => trigger$.pipe(
-    tap(_ => this.setState((state) => ({...state, toDo: null })))
   ));
 }
