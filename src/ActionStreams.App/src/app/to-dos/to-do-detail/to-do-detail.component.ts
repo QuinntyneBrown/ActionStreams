@@ -15,8 +15,12 @@ export class ToDoDetailComponent {
     status: new FormControl(null,[])
   });
 
-  @Input("toDo") set toDo(value: ToDo) {
-    this.form.setValue(this.toDo);
+  @Input("toDo") set toDo(toDo: ToDo) {
+    if(toDo) {
+      this.form.setValue(toDo);
+    } else {
+      this.form.reset();
+    }
   }
 
   @Output() public save: EventEmitter<ToDo> = new EventEmitter();
