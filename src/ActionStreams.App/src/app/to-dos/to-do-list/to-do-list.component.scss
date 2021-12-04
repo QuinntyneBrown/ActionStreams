@@ -4,4 +4,14 @@
     grid-template-columns: auto auto;
     place-items: center start;
   }
+
+  ul, li {
+    margin:0;
+    padding:0;
+    list-style: none;
+  }
+
+  li {
+    cursor: pointer;
+  }
 }
