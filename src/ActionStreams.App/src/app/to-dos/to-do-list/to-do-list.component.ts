@@ -13,4 +13,6 @@ export class ToDoListComponent {
   @Input() toDo: ToDo;
 
   @Output() public select: EventEmitter<ToDo> = new EventEmitter();
+
+  @Output() public create: EventEmitter<void> = new EventEmitter();
 }

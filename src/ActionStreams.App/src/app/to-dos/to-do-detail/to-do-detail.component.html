@@ -1,17 +1,29 @@
-<h1 *ngIf="!form.value.toDoId">Create To Do</h1>
+<h1 class="g-heading" *ngIf="!form.value.toDoId">Create To Do</h1>
 
-<h1 *ngIf="form.value.toDoId">Edit To Do</h1>
+<h1 class="g-heading" *ngIf="form.value.toDoId">Edit To Do</h1>
 
 <form [formGroup]="form">
-  <div>
-    <label>
+
+  <div class="g-form-field">
+
+    <label class="g-label">
       Description
     </label>
 
-    <input type="text" formControlName="description">
+    <input type="text" class="g-input" formControlName="description">
+
   </div>
+
 </form>
 
-<button (click)="cancel.emit()">Cancel</button>
+<div class="g-actions">
 
-<button (click)="save.emit(form.value)">Save</button>
+  <button class="g-button" *ngIf="form.value.toDoId">Delete</button>
+
+  <button class="g-button" *ngIf="form.value.toDoId">Complete</button>
+
+  <button class="g-button" (click)="cancel()">Cancel</button>
+
+  <button class="g-button" (click)="save.emit(form.value)">Save</button>
+
+</div>

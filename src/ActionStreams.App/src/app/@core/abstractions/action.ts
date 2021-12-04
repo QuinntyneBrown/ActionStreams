@@ -1,4 +1,4 @@
-export type ActionType = 'select' | 'create' | 'update' | 'delete' | 'cancel' | 'default';
+export type ActionType = 'select' | 'create' | 'update' | 'delete' | 'default';
 
 export type Action<T> = {
   type: ActionType,

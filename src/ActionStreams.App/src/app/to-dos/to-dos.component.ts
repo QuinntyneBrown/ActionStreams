@@ -28,7 +28,6 @@ export class ToDosComponent {
       this._action$.pipe(
         tap(action => {
           switch(action.type) {
-            case 'cancel':
             case 'create':
               this._toDoStore.setState((state) => ({...state, toDo: null }));
               break;
@@ -65,16 +64,11 @@ export class ToDosComponent {
     }
   }
 
-  public handleCancel() {
-    this._actionStream.next({ payload: null, type: 'cancel' });
-  }
-
   public handleSelect(toDo: ToDo) {
     this._actionStream.next({ payload: toDo, type: 'select' });
   }
 
-  createToDo() {
+  handleCreate() {
     this._actionStream.next({ payload: null, type: 'create' });
   }
-
 }

@@ -1,15 +1,12 @@
 <ng-container *ngIf="vm$ | async as vm">
 
-  <h1>To Dos</h1>
-  <button (click)="createToDo()">create</button>
+   <div class="to-dos__container">
 
-  <div class="to-dos__container">
-
-    <app-to-do-list [toDos]="vm.toDos" (select)="handleSelect($event)">
+    <app-to-do-list [toDos]="vm.toDos" (select)="handleSelect($event)" (create)="handleCreate()">
 
     </app-to-do-list>
 
-    <app-to-do-detail (save)="handleSave($event)" (cancel)="handleCancel()" [toDo]="vm.toDo">
+    <app-to-do-detail (save)="handleSave($event)" [toDo]="vm.toDo">
 
     </app-to-do-detail>
 
